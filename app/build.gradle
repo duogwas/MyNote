@@ -37,4 +37,13 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+    //custom toast
+    implementation 'io.github.thang-uit:toastperfectlibrary:1.0.1'
+
+    //lottie animation
+    implementation 'com.airbnb.android:lottie:6.4.0'
+
+    //shimmer effect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }
