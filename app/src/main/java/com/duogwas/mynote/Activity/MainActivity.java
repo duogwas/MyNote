@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         if(!noteSearch.isEmpty()){
             clNoNote.setVisibility(View.GONE);
+            svNoteSearch.setVisibility(View.VISIBLE);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             rcvSearch.setLayoutManager(linearLayoutManager);
             NoteAdapter noteAdapter = new NoteAdapter(noteSearch, this);
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         else {
             clNoNote.setVisibility(View.VISIBLE);
+            svNoteSearch.setVisibility(View.GONE);
         }
 
     }
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } else {
             svNote.setVisibility(View.GONE);
             clAction.setVisibility(View.GONE);
-            svNoteSearch.setVisibility(View.VISIBLE);
+//            svNoteSearch.setVisibility(View.VISIBLE);
             searchNote(query);
         }
         return false;
@@ -175,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } else {
             svNote.setVisibility(View.GONE);
             clAction.setVisibility(View.GONE);
-            svNoteSearch.setVisibility(View.VISIBLE);
+//            svNoteSearch.setVisibility(View.VISIBLE);
             searchNote(newText);
         }
         return false;
