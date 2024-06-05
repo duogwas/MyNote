@@ -13,10 +13,10 @@
         android:theme="@style/Theme.MyNote"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.SplashScreen"
+            android:name=".Activity.NoteDetail"
             android:exported="false" />
         <activity
-            android:name=".Activity.NoteDetail"
+            android:name=".Activity.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
