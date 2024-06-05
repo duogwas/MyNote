@@ -42,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllNote() {
-        Cursor cursor = myDB.rawQuery("SELECT * FROM " + table_name + " WHERE " + row_pinned + "= 0" + " ORDER BY " + row_id + " DESC ", null);
+        Cursor cursor = myDB.rawQuery("SELECT * FROM " + table_name + " ORDER BY " + row_id + " DESC ", null);
         return cursor;
     }
 

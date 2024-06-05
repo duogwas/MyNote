@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.MyNote" parent="Base.Theme.MyNote" />
+
+    <style name="ThemeOverlay.search" parent="Theme.MyNote">
+        <item name="android:editTextColor">#000</item>
+        <item name="android:textColorHint">#000</item>
+    </style>
 </resources>

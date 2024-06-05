@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,15 +22,16 @@ import com.duogwas.mynote.R;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     Integer result;
     ArrayList<Note> noteArrayList = new ArrayList<>();
     ArrayList<Note> notePinnedArrayList = new ArrayList<>();
-    ConstraintLayout clNoNote;
-    ScrollView svNote;
+    ConstraintLayout clNoNote, clAction;
+    ScrollView svNote, svNoteSearch;
     TextView tvPinned, tvCount;
-    RecyclerView rcvPinnedNote, rcvAllNote;
+    RecyclerView rcvPinnedNote, rcvAllNote, rcvSearch;
     ImageButton btnCreateNote;
+    SearchView searchView;
     DBHelper dbHelper;
 
 
@@ -48,17 +50,24 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+
     }
 
     private void initView() {
         dbHelper = new DBHelper(this);
         clNoNote = findViewById(R.id.clNoNote);
+        clAction = findViewById(R.id.clAction);
         svNote = findViewById(R.id.svNote);
+        svNoteSearch = findViewById(R.id.svNoteSearch);
         tvPinned = findViewById(R.id.tvPinned);
         tvCount = findViewById(R.id.tvCount);
         rcvPinnedNote = findViewById(R.id.rcvPinnedNote);
         rcvAllNote = findViewById(R.id.rcvAllNote);
+        rcvSearch = findViewById(R.id.rcvSearch);
         btnCreateNote = findViewById(R.id.btnCreateNote);
+        searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(this);
     }
 
     private void countNote() {
@@ -118,5 +127,57 @@ public class MainActivity extends AppCompatActivity {
         rcvPinnedNote.setLayoutManager(linearLayoutManager);
         NoteAdapter noteAdapter = new NoteAdapter(notePinnedArrayList, this);
         rcvPinnedNote.setAdapter(noteAdapter);
+    }
+
+    private void searchNote(String keyword) {
+        ArrayList<Note> noteSearch = new ArrayList<>();
+        for (Note note : noteArrayList) {
+            if (note.title.toLowerCase().contains(keyword.toLowerCase())) {
+                noteSearch.add(note);
+            }
+        }
+        if(!noteSearch.isEmpty()){
+            clNoNote.setVisibility(View.GONE);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            rcvSearch.setLayoutManager(linearLayoutManager);
+            NoteAdapter noteAdapter = new NoteAdapter(noteSearch, this);
+            rcvSearch.setAdapter(noteAdapter);
+        }
+        else {
+            clNoNote.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (query.length() == 0) {
+            clNoNote.setVisibility(View.GONE);
+            svNote.setVisibility(View.VISIBLE);
+            clAction.setVisibility(View.VISIBLE);
+            svNoteSearch.setVisibility(View.GONE);
+        } else {
+            svNote.setVisibility(View.GONE);
+            clAction.setVisibility(View.GONE);
+            svNoteSearch.setVisibility(View.VISIBLE);
+            searchNote(query);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText.length() == 0) {
+            clNoNote.setVisibility(View.GONE);
+            svNote.setVisibility(View.VISIBLE);
+            clAction.setVisibility(View.VISIBLE);
+            svNoteSearch.setVisibility(View.GONE);
+        } else {
+            svNote.setVisibility(View.GONE);
+            clAction.setVisibility(View.GONE);
+            svNoteSearch.setVisibility(View.VISIBLE);
+            searchNote(newText);
+        }
+        return false;
     }
 }
