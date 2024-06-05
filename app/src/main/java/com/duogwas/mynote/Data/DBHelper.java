@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "(" + row_id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + row_title + " TEXT,"
                 + row_content + " TEXT,"
-                + row_pinned + " BOOLEAN CHECK (" + row_pinned + " IN (0, 1)),"
+                + row_pinned + " INTEGER CHECK (" + row_pinned + " IN (0, 1)),"
                 + row_created + " TEXT)";
         db.execSQL(query);
     }
@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getPinnedNote() {
-        Cursor cursor = myDB.rawQuery("SELECT * FROM " + table_name + " WHERE " + row_pinned + "= 1", null);
+        Cursor cursor = myDB.rawQuery("SELECT * FROM " + table_name + " WHERE " + row_pinned + "= 1" + " ORDER BY " + row_id + " DESC ", null);
         return cursor;
     }
 

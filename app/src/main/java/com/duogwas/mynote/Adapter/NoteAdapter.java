@@ -1,6 +1,7 @@
 package com.duogwas.mynote.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.duogwas.mynote.Activity.NoteDetail;
 import com.duogwas.mynote.Model.Note;
 import com.duogwas.mynote.R;
 
@@ -51,6 +53,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.tvNoteTitle.setText(note.getTitle());
         holder.tvNoteContent.setText(note.getContent());
         holder.tvCreatedAt.setText(note.getCreated_at());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, NoteDetail.class);
+            intent.putExtra("noteID",note.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override

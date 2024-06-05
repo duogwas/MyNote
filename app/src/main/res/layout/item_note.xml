@@ -6,7 +6,7 @@
     android:layout_margin="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clProductCartInfor"
+        android:id="@+id/clNoteInfor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,5 +64,5 @@
         android:layout_marginBottom="5dp"
         android:background="#B0BEC5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clProductCartInfor" />
+        app:layout_constraintTop_toBottomOf="@id/clNoteInfor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

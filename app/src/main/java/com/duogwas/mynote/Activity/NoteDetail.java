@@ -1,7 +1,9 @@
 package com.duogwas.mynote.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,6 +22,8 @@ import com.duogwas.mynote.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import vn.thanguit.toastperfect.ToastPerfect;
+
 public class NoteDetail extends AppCompatActivity {
     DBHelper dbHelper;
     ImageView ivBack;
@@ -28,6 +32,7 @@ public class NoteDetail extends AppCompatActivity {
     AppCompatButton btnCreate, btnUpdate, btnDelete;
     LinearLayout lnEditUpdate;
     int createNote;
+    Long noteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,10 @@ public class NoteDetail extends AppCompatActivity {
 
         btnCreate.setOnClickListener(v -> {
             createNote();
+        });
+
+        btnUpdate.setOnClickListener(v -> {
+            updateNote();
         });
 
     }
@@ -71,6 +80,28 @@ public class NoteDetail extends AppCompatActivity {
             lnEditUpdate.setVisibility(View.VISIBLE);
             btnCreate.setVisibility(View.GONE);
         }
+
+        noteId = intent.getLongExtra("noteID", -1);
+        if (noteId != -1) {
+            getNoteDetail();
+        }
+    }
+
+    private void getNoteDetail() {
+        Cursor cursor = dbHelper.getNoteDetail(noteId);
+        if (cursor.moveToFirst()) {
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(DBHelper.row_title));
+            @SuppressLint("Range") String detail = cursor.getString(cursor.getColumnIndex(DBHelper.row_content));
+            @SuppressLint("Range") int checked = cursor.getInt(cursor.getColumnIndex(DBHelper.row_pinned));
+
+            edtNoteTitle.setText(title);
+            edtNoteContent.setText(detail);
+            if (checked == 0) {
+                cbPinned.setChecked(false);
+            } else {
+                cbPinned.setChecked(true);
+            }
+        }
     }
 
     private void createNote() {
@@ -95,12 +126,11 @@ public class NoteDetail extends AppCompatActivity {
         values.put(DBHelper.row_pinned, pinned);
         values.put(DBHelper.row_created, created);
 
-        //Create Condition if Title and Detail is empty
         if (title.equals("") && content.equals("")) {
-            Toast.makeText(this, "Nothing to save", Toast.LENGTH_SHORT).show();
+            ToastPerfect.makeText(this, ToastPerfect.ERROR, "Vui lòng nhập đầy đủ thông tin", ToastPerfect.TOP, ToastPerfect.LENGTH_SHORT).show();
         } else {
             dbHelper.insertNote(values);
-            Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+            ToastPerfect.makeText(this, ToastPerfect.SUCCESS, "Tạo thành công", ToastPerfect.TOP, ToastPerfect.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -108,7 +138,29 @@ public class NoteDetail extends AppCompatActivity {
     }
 
     private void updateNote() {
+        String title = edtNoteTitle.getText().toString().trim();
+        String content = edtNoteContent.getText().toString().trim();
+        int pinned;
+        Boolean pinnedChecked = cbPinned.isChecked();
+        if (pinnedChecked) {
+            pinned = 1;
+        } else {
+            pinned = 0;
+        }
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.row_title, title);
+        values.put(DBHelper.row_content, content);
+        values.put(DBHelper.row_pinned, pinned);
 
+        if (title.equals("") && content.equals("")) {
+            ToastPerfect.makeText(this, ToastPerfect.ERROR, "Vui lòng nhập đầy đủ thông tin", ToastPerfect.TOP, ToastPerfect.LENGTH_SHORT).show();
+        } else {
+            dbHelper.updateNote(values, noteId);
+            ToastPerfect.makeText(this, ToastPerfect.SUCCESS, "Cập nhật thành công", ToastPerfect.TOP, ToastPerfect.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void deleteNote() {
