@@ -50,8 +50,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
         holder.tvNoteTitle.setText(note.getTitle());
         holder.tvNoteContent.setText(note.getContent());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        holder.tvCreatedAt.setText(formatter.format(note.getCreated_at()));
+        holder.tvCreatedAt.setText(note.getCreated_at());
     }
 
     @Override

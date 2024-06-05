@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DbHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
     public static final String database_name = "db_note";
     public static final String table_name = "tbl_note";
     public static final String row_id = "id";
@@ -16,7 +16,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String row_created = "created_at";
     private SQLiteDatabase myDB;
 
-    public DbHelper(Context context) {
+    public DBHelper(Context context) {
         super(context, database_name, null, 1);
         myDB = getWritableDatabase();
     }
@@ -24,7 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + table_name +
-                "(" + row_id + " LONG PRIMARY KEY AUTOINCREMENT,"
+                "(" + row_id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + row_title + " TEXT,"
                 + row_content + " TEXT,"
                 + row_pinned + " BOOLEAN CHECK (" + row_pinned + " IN (0, 1)),"
@@ -37,8 +37,12 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + table_name);
     }
 
+    public Cursor count(String sql) {
+        return myDB.rawQuery(sql, null);
+    }
+
     public Cursor getAllNote() {
-        Cursor cursor = myDB.rawQuery("SELECT * FROM " + table_name + " ORDER BY " + row_id + " DESC ", null);
+        Cursor cursor = myDB.rawQuery("SELECT * FROM " + table_name + " WHERE " + row_pinned + "= 0" + " ORDER BY " + row_id + " DESC ", null);
         return cursor;
     }
 

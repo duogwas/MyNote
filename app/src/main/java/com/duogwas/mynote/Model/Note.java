@@ -7,6 +7,14 @@ public class Note {
     public int pinned;
     public String created_at;
 
+    public Note(Long id, String title, String content, int pinned, String created_at) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.pinned = pinned;
+        this.created_at = created_at;
+    }
+
     public Long getId() {
         return id;
     }
