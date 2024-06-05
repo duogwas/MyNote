@@ -1,11 +1,17 @@
 package com.duogwas.mynote.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -56,6 +62,9 @@ public class NoteDetail extends AppCompatActivity {
             updateNote();
         });
 
+        btnDelete.setOnClickListener(v -> {
+            showDialogDelete();
+        });
     }
 
     private void initView() {
@@ -164,6 +173,37 @@ public class NoteDetail extends AppCompatActivity {
     }
 
     private void deleteNote() {
+        dbHelper.deleteNote(noteId);
+        ToastPerfect.makeText(this, ToastPerfect.SUCCESS, "Xóa thành công", ToastPerfect.TOP, ToastPerfect.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
+    private void showDialogDelete(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_delete);
+        AppCompatButton btnDelete = dialog.findViewById(R.id.btnDelete);
+        AppCompatButton btnCancel = dialog.findViewById(R.id.btnCancel);
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteNote();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setGravity(Gravity.CENTER);
     }
 }
