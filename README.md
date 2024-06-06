@@ -6,6 +6,7 @@
   - **3. Sửa ghi chú**
   - **4. Xóa ghi chú**
   - **5. Tìm kiếm ghi chú**
+  - **6. Lưu trữ ghi chú cục bộ bằng SQLite**
  
 - **Một số hình ảnh giao diện của ứng dụng**
   - **1. Màn hình khi chạy ứng dụng**
